@@ -35,23 +35,3 @@ void main()
     printf("Average waiting time = %f\n",avgwt);
 }
 
-output:
-Enter the number of processes :4
-Enter arrival time and burst time for process no 1 :
-0
-7
-Enter arrival time and burst time for process no 2 :
-0
-3
-Enter arrival time and burst time for process no 3 :
-0
-4
-Enter arrival time and burst time for process no 4 :
-0
-6
-Turn around time and waiting time for process 1 are = 7, 0
-Turn around time and waiting time for process 2 are = 10, 7
-Turn around time and waiting time for process 3 are = 14, 10
-Turn around time and waiting time for process 4 are = 20, 14
-Average turn around time = 12.750000
-Average waiting time = 7.750000
