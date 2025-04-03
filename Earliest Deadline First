@@ -20,7 +20,7 @@ void sortByDeadline(Process proc[], int n) {
     }
 }
 
-int main() {
+void main() {
     int n;
     printf("Enter the number of processes:");
     scanf("%d", &n);
@@ -51,13 +51,6 @@ int main() {
         printf("%d      %d        %d          %d\n", proc[i].pid, proc[i].burst, proc[i].deadline, proc[i].period);
     }
 
-    printf("\nScheduling occurs for 6 ms\n");
-    for (int time = 0; time < 6; time++) {
-        printf("%dms : Task %d is running.\n", time, proc[0].pid);
-    }
 
-    printf("\nProcess returned 6 (0x6)   execution time : 17.130 s\n");
-    printf("Press any key to continue.\n");
-
-    return 0;
+ 
 }
