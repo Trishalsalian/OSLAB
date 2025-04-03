@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<math.h>
+
+struct Task
+{
+   int id, period, execution_time, remaining_time, deadline;
+};
+
+int gcd(int a, int b)
+{
+   while (b != 0)
+   {
+     int temp = b;
+     b = a % b;
+     a = temp;
+   }
+    return a;
+}
+
+int lcm(int a, int b)
+{
+  return (a * b) / gcd(a, b);
+}
+
+void sort_by_period(struct Task tasks[], int n)
+{
+   for (int i = 0; i < n - 1; i++)
+   {
+    for (int j = 0; j < n - i - 1; j++)
+    {
+     if (tasks[j].period > tasks[j + 1].period)
+     {
+      struct Task temp = tasks[j];
+      tasks[j] = tasks[j + 1];
+      tasks[j + 1] = temp;
+      }
+    }
+  }
+}
+
+void rate_monotonic(struct Task tasks[], int n, int hyper_period)
+{
+ for (int time = 0; time < hyper_period; time++)
+ {
+  int selected = -1;
+  for (int i = 0; i < n; i++)
+  {
+   if (time % tasks[i].period == 0)
+   {
+    tasks[i].remaining_time = tasks[i].execution_time;
+    tasks[i].deadline = time + tasks[i].period;
+    }
+  }
+  for (int i = 0; i < n; i++)
+  {
+   if (tasks[i].remaining_time > 0 && (selected == -1 || tasks[i].period < tasks[selected].period))
+   {
+    selected = i;
+   }
+  }
+  if (selected != -1)
+  {
+    tasks[selected].remaining_time--;
+    printf("Time %d: Task %d\n", time, tasks[selected].id);
+  }
+  else
+  {
+  printf("Time %d: Idle\n", time);
+  }
+  }
+}
+
+void main()
+{
+   int n, hyper_period;
+   printf("Enter the number of tasks: ");
+   scanf("%d", &n);
+   double p=pow(2,(1.0/n));
+   double c1= n*(p-1);
+   struct Task tasks[n];
+   for (int i = 0; i < n; i++)
+   {
+     printf("Enter execution time and period for Task %d: ", i + 1);
+     scanf("%d %d", &tasks[i].execution_time, &tasks[i].period);
+     tasks[i].id = i + 1;
+     tasks[i].remaining_time = 0;
+     tasks[i].deadline = 0;
+    }
+
+hyper_period = tasks[0].period;
+for (int i = 1; i < n; i++)
+{
+    hyper_period = lcm(hyper_period, tasks[i].period);
+}
+ double c2=0.0;
+for (int i=0;i<n;i++)
+{
+    c2=c2+((double)(tasks[i].execution_time)/(tasks[i].period));
+}
+if(c2<=c1)
+{
+  sort_by_period(tasks, n);
+  rate_monotonic(tasks, n, hyper_period);
+}
+else
+{
+    printf("%lf <= %lf ",c2,c1);
+  printf("\nCondition not satisfied\n");
+}
+}
