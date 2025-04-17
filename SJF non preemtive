@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+#define MAX 100
+
+void main() {
+    int n, at[MAX], bt[MAX], ct[MAX], tat[MAX], wt[MAX], rt[MAX];
+    int is_completed[MAX] = {0};
+    int time = 0, completed = 0, min_bt, idx;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++) {
+        printf("Enter arrival time and burst time for process %d: ", i + 1);
+        scanf("%d%d", &at[i], &bt[i]);
+    }
+
+    while(completed != n) {
+        min_bt = 1e9;
+        idx = -1;
+        for(int i = 0; i < n; i++) {
+            if(at[i] <= time && !is_completed[i]) {
+                if(bt[i] < min_bt) {
+                    min_bt = bt[i];
+                    idx = i;
+                }
+                else if(bt[i] == min_bt) {
+                    if(at[i] < at[idx]) {
+                        idx = i;
+                    }
+                }
+            }
+        }
+
+        if(idx != -1) {
+            rt[idx] = time - at[idx];
+            time += bt[idx];
+            ct[idx] = time;
+            tat[idx] = ct[idx] - at[idx];
+            wt[idx] = tat[idx] - bt[idx];
+            is_completed[idx] = 1;
+            completed++;
+        } else {
+            time++;
+        }
+    }
+
+    printf("\nP\tAT\tBT\tCT\tTAT\tWT\tRT\n");
+    for(int i = 0; i < n; i++) {
+        printf("P%d\t%d\t%d\t%d\t%d\t%d\t%d\n", i+1, at[i], bt[i], ct[i], tat[i], wt[i], rt[i]);
+    }
+
+}
